@@ -141,36 +141,6 @@ def part_one(msb, variables, graph, bool_equations):
     return int("".join(bits), 2)
 
 
-def draw_regular_graph(graph):
-    import matplotlib.pyplot as plt
-    import networkx as nx
-
-    G = nx.DiGraph()
-
-    # יצירת הקשתות
-    for node, edges in graph.items():
-        for edge in edges:
-            G.add_edge(node, edge)
-
-    # שימוש בפריסה אוטומטית
-    pos = nx.spring_layout(G)  # אפשר להחליף ל-kamada_kawai_layout אם תרצה
-
-    # שרטוט הצמתים והקשתות
-    plt.figure(figsize=(12, 8))
-    nx.draw_networkx_nodes(G, pos, node_size=2000, node_color="lightblue", alpha=0.9)
-    nx.draw_networkx_labels(G, pos, font_size=12, font_color="black")
-
-    # שרטוט הקשתות
-    nx.draw_networkx_edges(
-        G, pos, arrowstyle="->", arrowsize=20, edge_color="gray", width=1.5, alpha=0.7
-    )
-
-    # הוספת כותרת והצגת הגרף
-    plt.title("Regular Graph Visualization", fontsize=16)
-    plt.axis("off")
-    plt.show()
-
-
 def get_sub_nodes(v, graph):
     visited = set()
 
@@ -194,79 +164,6 @@ def get_sub_graph(nodes, graph):
         sub_graph[node] = nodes_set & set(graph[node])
 
     return sub_graph
-
-
-def draw_tree_hierarchy(graph):
-    import matplotlib.pyplot as plt
-    import networkx as nx
-
-    G = nx.DiGraph()
-
-    # יצירת הקשתות
-    for node, edges in graph.items():
-        for edge in edges:
-            G.add_edge(node, edge)
-
-    # חיפוש שורש העץ
-    all_nodes = set(G.nodes)
-    child_nodes = set(edge[1] for edge in G.edges)
-    root_nodes = list(all_nodes - child_nodes)
-
-    if not root_nodes:
-        print("Cannot draw tree: No root found.")
-        return
-    elif len(root_nodes) > 1:
-        print(f"Cannot draw tree: Multiple roots found: {root_nodes}")
-        return
-
-    root = root_nodes[0]
-
-    # יצירת פריסה היררכית ידנית
-    pos = _manual_hierarchy_pos(G, root)
-
-    # שרטוט הצמתים והקשתות
-    plt.figure(figsize=(12, 8))
-    nx.draw_networkx_nodes(G, pos, node_size=2000, node_color="lightblue", alpha=0.9)
-    nx.draw_networkx_labels(G, pos, font_size=12, font_color="black")
-    nx.draw_networkx_edges(
-        G, pos, arrowstyle="->", arrowsize=20, edge_color="gray", width=1.5, alpha=0.7
-    )
-
-    # הוספת כותרת והצגת העץ
-    plt.title("Tree Visualization - Hierarchy Layout", fontsize=16)
-    plt.axis("off")
-    plt.show()
-
-
-def _manual_hierarchy_pos(
-    G, root, width=1.0, vert_gap=0.2, vert_loc=0, xcenter=0.5, pos=None, parent=None
-):
-    """פריסה היררכית ידנית לעץ."""
-    if pos is None:
-        pos = {root: (xcenter, vert_loc)}
-    else:
-        pos[root] = (xcenter, vert_loc)
-
-    neighbors = list(G.neighbors(root))
-    if parent is not None:  # הוצאת האב מרשימת השכנים
-        neighbors = [n for n in neighbors if n != parent]
-
-    if len(neighbors) != 0:
-        dx = width / len(neighbors)  # חלוקה לרוחב בין השכנים
-        next_x = xcenter - width / 2 - dx / 2
-        for neighbor in neighbors:
-            next_x += dx
-            pos = _manual_hierarchy_pos(
-                G,
-                neighbor,
-                width=dx,
-                vert_gap=vert_gap,
-                vert_loc=vert_loc - vert_gap,
-                xcenter=next_x,
-                pos=pos,
-                parent=root,
-            )
-    return pos
 
 
 def get_eq(v, bool_equations, variables):
@@ -294,28 +191,10 @@ def get_eq(v, bool_equations, variables):
     return f"{v}={eq_str}"
 
 
-def swap_gates(bit, eq_gates, variables, gates, graph, exp):
-    c = []
-    for gate1, gate2 in combinations(gates, 2):
-        if gate1 not in "xy" or gate2 not in "xy":
-            eq_gates[gate1], eq_gates[gate2] = eq_gates[gate2], eq_gates[gate1]
-            s_graph = get_sub_graph(eq_gates, graph)
-            b = get_bit(bit, variables, s_graph, eq_gates)
-            if b == exp:
-                c.append([gate1, gate2])
-
-    return c
-
-
 path = "input.txt"
 
 msb, variables, graph, bool_equations = get_input(path)
 print(part_one(msb, variables, graph, bool_equations))
-swap_gates(
-    5,
-    bool_equations,
-    variables,
-)
 # eq_gates = {}
 
 # for v1, op, v2, result in bool_equations:
