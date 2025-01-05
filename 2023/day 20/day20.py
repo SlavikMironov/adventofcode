@@ -102,8 +102,8 @@ def part_two(graph, inverse_graph):
                             lcm_states.append(i - times[next_state])
                         times[next_state] = i
                         count[next_state] += 1
-                    if len(lcm_states) == len(cycle_state):
-                        return lcm_multiple(lcm_states)
+                        if len(lcm_states) == len(cycle_state):
+                            return lcm_multiple(lcm_states)
                     if next_state == "rx" and pulse == 0:
                         print(i + 1)
                         return i + 1
