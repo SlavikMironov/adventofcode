@@ -1,15 +1,9 @@
 def get_puzzle(path):
-    pairs = []
-
     with open(path) as file:
-        for line in file.read().splitlines():
-            pairs.append(
-                tuple(
-                    tuple(int(bound) for bound in p.split("-")) for p in line.split(",")
-                )
-            )
-
-        return pairs
+        return [
+            tuple(tuple(int(bound) for bound in p.split("-")) for p in line.split(","))
+            for line in file.read().splitlines()
+        ]
 
 
 def part_one(puzzle):
