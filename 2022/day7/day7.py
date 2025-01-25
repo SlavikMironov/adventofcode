@@ -37,15 +37,10 @@ def solution(cmds):
         else:
             current_dir = current_dir.rstrip("/") + "/" + name
         i += 1
+
     get_sizes_of_directories(directories)
     free_space = 70 * 10**6 - directories["/"].directory_size
     required_free_space = 30 * 10**6 - free_space
-
-    dir_size = min(
-        directory.directory_size
-        for directory in directories.values()
-        if directory.directory_size >= required_free_space
-    )
 
     return (
         sum(
@@ -53,7 +48,11 @@ def solution(cmds):
             for directory in directories.values()
             if directory.directory_size <= 100000
         ),
-        dir_size,
+        min(
+            directory.directory_size
+            for directory in directories.values()
+            if directory.directory_size >= required_free_space
+        ),
     )
 
 
