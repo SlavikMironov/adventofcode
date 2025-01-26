@@ -33,10 +33,9 @@ def part_one(monkeys: list[Monkey]):
             for old in monkey.items:
                 monkey.inspects += 1
                 new = eval(monkey.operation) // 3
-                if not new % monkey.divisible:
-                    monkeys[monkey.if_true].items.append(new)
-                else:
-                    monkeys[monkey.if_false].items.append(new)
+                monkeys[
+                    monkey.if_true if not new % monkey.divisible else monkey.if_false
+                ].items.append(new)
             monkey.items = []
     monkeys.sort(key=lambda monkey: monkey.inspects, reverse=True)
 
@@ -54,10 +53,9 @@ def part_two(monkeys: list[Monkey]):
                 monkey.inspects += 1
                 new = eval(monkey.operation)
                 new = new % lcm_value
-                if not new % monkey.divisible:
-                    monkeys[monkey.if_true].items.append(new)
-                else:
-                    monkeys[monkey.if_false].items.append(new)
+                monkeys[
+                    monkey.if_true if not new % monkey.divisible else monkey.if_false
+                ].items.append(new)
             monkey.items = []
     monkeys.sort(key=lambda monkey: monkey.inspects, reverse=True)
 
