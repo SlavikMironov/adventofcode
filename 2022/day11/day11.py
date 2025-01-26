@@ -67,5 +67,6 @@ def part_two(monkeys: list[Monkey]):
 path = "input.txt"
 
 monkeys = get_puzzle(path)
-# print(f"Part one: {part_one(monkeys)}")
+print(f"Part one: {part_one(monkeys)}")
+monkeys = get_puzzle(path)
 print(f"Part two: {part_two(monkeys)}")
