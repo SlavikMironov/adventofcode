@@ -104,4 +104,4 @@ for rock in rocks:
         max_y = max(y, max_y)
 
 print(f"Part one: {part_one(rocks, max_x, max_y, min_x)}")
-print(f"Part one: {part_two(rocks, max_x, max_y)}")
+print(f"Part two: {part_two(rocks, max_x, max_y)}")
