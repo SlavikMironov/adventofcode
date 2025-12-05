@@ -1,6 +1,4 @@
 ranges, nums = open("input.txt").read().split("\n\n")
-
-
 ranges = [list(map(int, range.split("-"))) for range in ranges.splitlines()]
 nums = list(map(int, nums.splitlines()))
 # Part 1
