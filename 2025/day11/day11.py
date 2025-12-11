@@ -2,7 +2,7 @@ from collections import defaultdict
 from functools import cache
 
 graph = defaultdict(list)
-# Confirm that the graph structure is a tree
+# Confirm that the graph structure is a DAG
 
 for line in open("input.txt").read().splitlines():
     parts = line.split()
@@ -16,13 +16,7 @@ for line in open("input.txt").read().splitlines():
 def get_paths(node):
     if node == "out":
         return 1
-
-    res = 0
-
-    for u in graph.get(node, []):
-        res += get_paths(u)
-
-    return res
+    return sum(get_paths(u) for u in graph.get(node, []))
 
 
 print(f"Part one: {get_paths("you")}")
@@ -34,11 +28,7 @@ def get_paths2(node, c):
         return 1 if c == 2 else 0
     if node in ["dac", "fft"]:
         c += 1
-
-    total = 0
-    for nxt in graph[node]:
-        total += get_paths2(nxt, c)
-    return total
+    return sum(get_paths2(u, c) for u in graph.get(node, []))
 
 
 print("Part two:", get_paths2("svr", 0))
