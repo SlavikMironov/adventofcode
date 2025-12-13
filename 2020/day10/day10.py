@@ -17,16 +17,10 @@ print(f"Part one: {count[1] * count[3]}")
 @cache
 def number_of_ways(i, prev):
     if i == n:
-        if prev == target:
-            return 1
-        return 0
-
-    res = 0
-
+        return 1 if prev == target else 0
     if joltages[i] - prev <= 3:
-        res += number_of_ways(i + 1, joltages[i])
-
-    return number_of_ways(i + 1, prev) + res
+        return number_of_ways(i + 1, joltages[i]) + number_of_ways(i + 1, prev)
+    return 0
 
 
 print(f"Part two: {number_of_ways(0, 0)}")
